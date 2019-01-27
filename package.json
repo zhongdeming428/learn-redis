@@ -1,0 +1,32 @@
+{
+  "name": "learn-redis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhongdeming428/learn-redis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhongdeming428/learn-redis/issues"
+  },
+  "homepage": "https://github.com/zhongdeming428/learn-redis#readme",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "good": "^8.1.2",
+    "good-console": "^7.1.0",
+    "hapi": "^18.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "redis-connection": "^5.4.0"
+  }
+}
