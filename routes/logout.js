@@ -5,6 +5,9 @@ const {
 const logoutConfig = {
   path: '/logout',
   method: 'GET',
+  config: {
+    auth: false
+  },
   handler: logout
 };
 

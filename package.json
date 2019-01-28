@@ -26,6 +26,7 @@
     "good": "^8.1.2",
     "good-console": "^7.1.0",
     "hapi": "^18.0.0",
+    "hapi-auth-jwt2": "^8.3.0",
     "jsonwebtoken": "^8.4.0",
     "redis-connection": "^5.4.0"
   }

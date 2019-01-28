@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const redis = require('redis-connection')();
+const { JWTSecret, expires } = require('../config').JWT;
 
 const viewsDir = path.resolve(__dirname, '../views/');
 
@@ -15,9 +16,8 @@ async function getToken() {
   const GUID = Date.now();
   const token = jwt.sign({
     auth: GUID,
-  }, 'akjhfklasjdhfjkhdsa123498hjr9');
+  }, JWTSecret);
   console.log(`GUID: ${GUID}`);
-  await redis.hset(GUID, 'isValid', true);
   return token;
 }
 
@@ -39,9 +39,38 @@ function logout(req, reply) {
   return token;
 }
 
+async function validate(decoded, request) {
+  const { auth, iat } = decoded;
+  console.log(`The auth of the token to be validate is =>>> ${auth}`);
+  const fail = {
+    isValid: false
+  }, success = {
+    isValid: true
+  };
+  if (!auth) return fail;
+  else {
+    // console.log(expires + iat >= Date.now());
+    if (expires + iat >= Date.now()) return fail;  // token is expired~ 
+    else {
+      // check whether the token is in redis blacklist~
+      // redis.get with await will always return true,wrapped with promise~
+      const token = await new Promise((resolve, reject) => {
+        redis.get(`GUID:${auth}`, (err, res) => {
+          if (err) reject(err);
+          else resolve(res);
+        });
+      });
+      // console.log(token);
+      if (token) return fail;
+    }
+  }
+  return success;
+}
+
 module.exports = {
   loadView,
   authSuccess,
   authFail,
-  logout
+  logout,
+  validate
 };

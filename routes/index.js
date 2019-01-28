@@ -7,6 +7,9 @@ const logout = require('./logout');
 const index = {
   path: '/',
   method: 'GET',
+  config: {
+    auth: 'jwt'
+  },
   handler: function(req, reply) {
     let res = reply.response(loadView('index'));
     res.header('Content-Type', 'text/html');

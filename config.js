@@ -1,0 +1,6 @@
+module.exports = {
+  JWT: {
+    JWTSecret: 'F72244EABFC45212AC1649CFC6285A7A1D45ADF0C498E955ED76A2D1D8269B34',
+    expires: 7 * 24 * 60 * 60 * 1000
+  }
+};

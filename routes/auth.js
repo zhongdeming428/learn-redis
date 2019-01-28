@@ -9,6 +9,9 @@ redis.setnx('admin', 'hidden');
 const authGet = {
   path: '/auth',
   method: 'GET',
+  config: {
+    auth: false
+  },
   handler(req, reply) {
     return loadView('auth');
   }
@@ -17,6 +20,9 @@ const authGet = {
 const authPost = {
   path: '/auth',
   method: 'POST',
+  config: {
+    auth: false
+  },
   handler(req, reply) {
     if (req.payload.username !== 'admin') {
       return reply.response('Username is invalid!');
