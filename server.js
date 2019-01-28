@@ -4,7 +4,10 @@ const routes = require('./routes');
 
 const server = hapi.server({
   host: 'localhost',
-  port: 3000
+  port: 3000,
+  state: {
+    ignoreErrors: true
+  }
 });
 
 const goodConsoleOptions = {

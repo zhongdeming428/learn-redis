@@ -11,18 +11,20 @@ function loadView(name) {
   return str;
 }
 
-function getToken() {
+async function getToken() {
   const GUID = Date.now();
   const token = jwt.sign({
     auth: GUID,
   }, 'akjhfklasjdhfjkhdsa123498hjr9');
-  redis.hmset(GUID, isValid, true);  // 此处还有问题～
+  console.log(`GUID: ${GUID}`);
+  await redis.hset(GUID, 'isValid', true);
   return token;
 }
 
-function authSuccess(req, reply) {
+async function authSuccess(req, reply) {
   const private = loadView('private');
-  const token = getToken();
+  const token = await getToken();
+  console.log(token);
   return reply.response(private)
     .header('authorization', token)
     .header('Content-Type', 'text/html').code(200);
@@ -32,8 +34,14 @@ function authFail(req, reply) {
   return 'Password incorrect!';
 }
 
+function logout(req, reply) {
+  let token = req.headers.authorization; // 现在 headers 并没有传过来 authorization，这里要改进。
+  return token;
+}
+
 module.exports = {
   loadView,
   authSuccess,
-  authFail
+  authFail,
+  logout
 };

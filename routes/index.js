@@ -2,6 +2,7 @@ const {
   loadView
 } = require('../utils');
 const auth = require('./auth');
+const logout = require('./logout');
 
 const index = {
   path: '/',
@@ -15,5 +16,5 @@ const index = {
 };
 
 module.exports = [
-  index, ...auth
+  index, ...auth, ...logout
 ];
