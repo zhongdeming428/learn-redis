@@ -26,6 +26,10 @@ async function authSuccess(req, reply) {
   const token = await getToken();
   console.log(token);
   return reply.response(private)
+    .state('jwt', token, {  
+      ttl: 1000 * 60 * 60 * 24,    // 1 day lifetime,
+      isSecure: false
+    })
     .header('authorization', token)
     .header('Content-Type', 'text/html').code(200);
 }
@@ -35,8 +39,22 @@ function authFail(req, reply) {
 }
 
 function logout(req, reply) {
-  let token = req.headers.authorization; // 现在 headers 并没有传过来 authorization，这里要改进。
-  return token;
+  console.log(req.state.jwt);
+  // let token = req.headers.authorization; // 现在 headers 并没有传过来 authorization，这里要改进。
+  const decoded = jwt.decode(req.state.jwt);
+  const auth = decoded.auth;
+  return new Promise((resolve) => {
+    redis.set(`GUID:${auth}`, true, (err, res) => {
+      if (err) resolve(err);
+      else {
+        resolve(reply.response()
+        .state('jwt', '', {
+          ttl: Date.now() - 10000,
+          isSecure: false
+        }).redirect('/auth'));
+      }
+    })
+  })
 }
 
 async function validate(decoded, request) {

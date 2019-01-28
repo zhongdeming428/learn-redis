@@ -3,12 +3,13 @@ const {
 } = require('../utils');
 const auth = require('./auth');
 const logout = require('./logout');
+const validate = require('./validate');
 
 const index = {
   path: '/',
   method: 'GET',
   config: {
-    auth: 'jwt'
+    auth: false
   },
   handler: function(req, reply) {
     let res = reply.response(loadView('index'));
@@ -19,5 +20,5 @@ const index = {
 };
 
 module.exports = [
-  index, ...auth, ...logout
+  index, ...auth, ...logout, ...validate
 ];
