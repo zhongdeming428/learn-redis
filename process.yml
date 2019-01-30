@@ -1,0 +1,5 @@
+apps:
+  - script: server.js
+    instance: 4
+    exec_mode: cluster
+    name: 'learn-redis'
